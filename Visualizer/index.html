@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Enigma Machine</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page">
+
+    <header class="intro">
+      <h1>Enigma Machine</h1>
+      <p>Type on your keyboard or click the keys. The lamp that lights up is the letter that comes out.</p>
+    </header>
+
+    <!-- The machine: a wooden case with a black top plate and the plugboard on the front -->
+    <section class="case" aria-label="Enigma machine">
+      <div class="plate">
+        <!-- Three rotor slots, left to right: slot 3, slot 2, slot 1. script.js fills them in. -->
+        <div class="rotors" id="rotors"></div>
+
+        <div class="lampboard" id="lampboard" aria-hidden="true"></div>
+
+        <div class="keyboard" id="keyboard"></div>
+      </div>
+
+      <div class="front">
+        <div class="front-label">
+          <span>Plugboard</span>
+          <span id="cableCount">0 of 10 cables</span>
+        </div>
+        <div class="plugboard" id="plugboard">
+          <svg class="cables" id="cables" aria-hidden="true"></svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- The paper strip: what was typed and what came out -->
+    <section class="tape" aria-label="Message">
+      <div class="tape-row">
+        <span class="tape-name">Typed</span>
+        <output class="tape-text" id="typedText"></output>
+      </div>
+      <div class="tape-row">
+        <span class="tape-name">Output</span>
+        <output class="tape-text out" id="lampText" aria-live="polite"></output>
+      </div>
+      <div class="tape-actions">
+        <button type="button" id="resetButton">Reset</button>
+        <p id="status" role="status">To decrypt, press Reset and type the output letters.</p>
+      </div>
+    </section>
+
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

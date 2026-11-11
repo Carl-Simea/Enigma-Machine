@@ -1,0 +1,363 @@
+/* style.css : the look of the machine. */
+
+/* ---- Colors ---- */
+:root {
+  /* the page around the machine */
+  --page: #ece6da;
+  --ink: #2a2520;
+  --ink-soft: #6a6055;
+  --strip: #fbf8f1;
+  --strip-line: #d8cfbf;
+
+  /* the machine itself (the same in light and dark) */
+  --wood: #6e4526;
+  --wood-dark: #4a2c16;
+  --wood-light: #8a5a33;
+  --metal: #1c1c1d;
+  --metal-edge: #343436;
+  --nickel: #c9c6bd;
+  --nickel-dark: #77736a;
+  --label: #d9d2c0;
+  --lamp-off: #2b2822;
+  --lamp-letter: #8a8271;
+  --lamp-on: #ffd866;
+  --window: #ece5d2;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #171512;
+    --ink: #ece6da;
+    --ink-soft: #a39a8c;
+    --strip: #24211c;
+    --strip-line: #3a352d;
+  }
+}
+:root[data-theme="dark"] {
+  --page: #171512;
+  --ink: #ece6da;
+  --ink-soft: #a39a8c;
+  --strip: #24211c;
+  --strip-line: #3a352d;
+}
+
+/* ---- Page ---- */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: "Futura", "Century Gothic", "Trebuchet MS", "Segoe UI", sans-serif;
+}
+
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 28px 16px 48px;
+}
+
+.intro h1 {
+  margin: 0 0 6px;
+  font-size: 1.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.intro p {
+  margin: 0 0 20px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+/* ---- The wooden case ---- */
+.case {
+  container-type: inline-size;       /* lets the keys size themselves from the case width */
+  padding: 12px;
+  border-radius: 10px;
+  background:
+    repeating-linear-gradient(92deg, rgba(0, 0, 0, 0.10) 0 2px, transparent 2px 9px),
+    linear-gradient(180deg, var(--wood-light), var(--wood) 30%, var(--wood-dark));
+  box-shadow: 0 2px 0 rgba(255, 255, 255, 0.15) inset, 0 14px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* One key, lamp or socket is --u wide. Everything else is measured in --u. */
+.plate, .front {
+  --u: clamp(22px, 8.4cqw, 50px);
+  background: var(--metal);
+  border: 1px solid var(--metal-edge);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 0 0 1px #000;
+}
+.plate {
+  border-radius: 6px 6px 2px 2px;
+  padding: calc(var(--u) * 0.5) calc(var(--u) * 0.3) calc(var(--u) * 0.6);
+}
+.front {
+  margin-top: 8px;
+  border-radius: 2px 2px 6px 6px;
+  padding: calc(var(--u) * 0.3) calc(var(--u) * 0.3) calc(var(--u) * 0.9);
+}
+
+/* Three rows of letters, the middle one shorter, like the real machine */
+.row {
+  display: flex;
+  justify-content: center;
+  gap: calc(var(--u) * 0.24);
+}
+.row + .row { margin-top: calc(var(--u) * 0.24); }
+
+/* ---- Rotors ---- */
+.rotors {
+  display: flex;
+  justify-content: center;
+  gap: calc(var(--u) * 0.7);
+  margin-bottom: calc(var(--u) * 0.6);
+}
+.rotor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.rotor select {
+  width: calc(var(--u) * 1.5);
+  min-width: 52px;
+  padding: 3px 4px;
+  font: inherit;
+  font-size: 0.8rem;
+  text-align: center;
+  color: var(--label);
+  background: #2a2a2c;
+  border: 1px solid #4a4a4d;
+  border-radius: 4px;
+}
+.wheel {
+  width: calc(var(--u) * 1.1);
+  min-width: 40px;
+  height: 22px;
+  padding: 0;
+  font-size: 0.6rem;
+  color: #2a2a2a;
+  cursor: pointer;
+  border: 1px solid #55524b;
+  border-radius: 4px;
+  /* ridges, like the edge of a thumbwheel */
+  background: repeating-linear-gradient(180deg, var(--nickel) 0 2px, var(--nickel-dark) 2px 4px);
+}
+.wheel:active { filter: brightness(0.8); }
+
+.window {
+  width: calc(var(--u) * 1.1);
+  min-width: 40px;
+  padding: 6px 0 5px;
+  text-align: center;
+  background: var(--window);
+  color: #1d1a16;
+  border-radius: 3px;
+  border: 2px solid var(--nickel-dark);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.45) inset;
+  overflow: hidden;
+}
+.window-number {
+  display: block;
+  font-size: calc(var(--u) * 0.62);
+  font-weight: 700;
+  line-height: 1.1;
+}
+.window-number.tick { animation: tick 0.14s ease-out; }
+@keyframes tick {
+  from { transform: translateY(60%); opacity: 0.3; }
+  to   { transform: translateY(0);   opacity: 1; }
+}
+.rotor-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lamp-letter);
+}
+
+/* ---- Lamps ---- */
+.lamp {
+  width: var(--u);
+  height: var(--u);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: calc(var(--u) * 0.44);
+  font-weight: 700;
+  color: var(--lamp-letter);
+  background: radial-gradient(circle at 35% 30%, #3b372f, var(--lamp-off) 60%);
+  border: 1px solid #000;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+.lamp.lit {
+  color: #3d2c00;
+  background: radial-gradient(circle at 40% 35%, #fff6c9, var(--lamp-on) 55%, #e0a91e);
+  box-shadow: 0 0 calc(var(--u) * 0.5) var(--lamp-on), 0 0 calc(var(--u) * 1.1) rgba(255, 200, 60, 0.45);
+}
+
+.keyboard { margin-top: calc(var(--u) * 0.7); }
+
+/* ---- Keys ---- */
+.key {
+  width: var(--u);
+  height: var(--u);
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font: inherit;
+  font-size: calc(var(--u) * 0.42);
+  font-weight: 700;
+  color: #f3efe4;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  border: calc(var(--u) * 0.07) solid var(--nickel);
+  background: radial-gradient(circle at 35% 30%, #3a3a3c, #0e0e0f 65%);
+  box-shadow: 0 calc(var(--u) * 0.09) 0 #000, 0 calc(var(--u) * 0.13) calc(var(--u) * 0.16) rgba(0, 0, 0, 0.6);
+  transition: transform 0.05s, box-shadow 0.05s;
+}
+.key.down {
+  transform: translateY(calc(var(--u) * 0.08));
+  box-shadow: 0 1px 0 #000;
+  border-color: var(--nickel-dark);
+}
+
+/* ---- Plugboard ---- */
+.front-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: calc(var(--u) * 0.3);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lamp-letter);
+}
+.plugboard { position: relative; }
+
+.socket {
+  width: var(--u);
+  padding: 2px 0 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font: inherit;
+  color: var(--label);
+  cursor: pointer;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 5px;
+}
+.socket-letter {
+  font-size: calc(var(--u) * 0.34);
+  font-weight: 700;
+}
+/* the two holes of a socket; a plug covers them with its cable color */
+.socket-holes {
+  width: calc(var(--u) * 0.36);
+  height: calc(var(--u) * 0.62);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 27%, #000 0 22%, transparent 24%),
+    radial-gradient(circle at 50% 73%, #000 0 22%, transparent 24%),
+    #3a3a3c;
+  border: 1px solid #505053;
+}
+.socket-partner {
+  min-height: 1em;
+  font-size: calc(var(--u) * 0.26);
+  line-height: 1;
+  color: var(--cable, transparent);
+}
+.socket.plugged .socket-holes {
+  background: var(--cable);
+  border-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.6);
+}
+.socket.picked { border-color: var(--lamp-on); }
+.socket.picked .socket-holes { background: var(--lamp-on); }
+
+.cables {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;              /* clicks go through the cables to the sockets */
+}
+.cables path {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: 0.85;
+}
+
+/* ---- Paper strip ---- */
+.tape {
+  margin-top: 22px;
+  padding: 14px 16px;
+  background: var(--strip);
+  border: 1px solid var(--strip-line);
+  border-radius: 6px;
+}
+.tape-row {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--strip-line);
+}
+.tape-name {
+  flex: 0 0 56px;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.tape-text {
+  flex: 1;
+  min-height: 1.5em;
+  font-family: ui-monospace, "Cascadia Mono", Consolas, Menlo, monospace;
+  font-size: 1.05rem;
+  letter-spacing: 0.12em;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.tape-text.out { font-weight: 700; }
+
+.tape-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-top: 12px;
+}
+.tape-actions p {
+  margin: 0;
+  flex: 1 1 200px;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+#resetButton {
+  padding: 8px 18px;
+  font: inherit;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+  background: transparent;
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+}
+#resetButton:hover { background: var(--ink); color: var(--page); }
+
+button:focus-visible, select:focus-visible {
+  outline: 3px solid var(--lamp-on);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .window-number.tick { animation: none; }
+  .key { transition: none; }
+}
