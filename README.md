@@ -1,8 +1,10 @@
-carl-simea.github.io/<repo-name>/visualizer/
+
 
 # Design notes
 
 How this Enigma came together, from watching a video on how the machine works to a working version in four languages. I came up with the structure. Claude (Anthropic's AI assistant) reviewed each idea, and where it was wrong, explained why and what works instead.
+
+**Try it in your browser:** [Enigma visualizer](https://carl-simea.github.io/Enigma-Machine/visualizer/)
 
 ## My starting idea
 
